@@ -1,0 +1,1 @@
+export const classRegex: RegExp = new RegExp(/class.[A-Za-z]{1,}/g);
