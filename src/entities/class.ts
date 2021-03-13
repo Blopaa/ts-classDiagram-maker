@@ -1,7 +1,7 @@
 export default class ClassEntity {
     private _name: string;
-    private _dependencies: string[];
-    private _extends: string[];
+    private _dependencies: string[] = [];
+    private _extends: string[] = [];
 
 
     get name(): string {

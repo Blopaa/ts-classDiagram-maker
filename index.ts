@@ -13,4 +13,4 @@ class Main {
     }
 }
 
-const main = new Main("C://Users/pablo/WebstormProjects/class-diagram-ts/clasesTest").on();
+const main = new Main("PATH_TO_DIR").on();
