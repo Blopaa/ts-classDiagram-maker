@@ -1,6 +1,6 @@
 import {PathLike, readdirSync} from 'fs'
 import * as fs from "fs";
-import {classRegex, extendRegex, multipleRegex} from "../types/regex";
+import {classRegex, classDependenciesRegex, multipleRegex} from "../types/regex";
 import ClassEntity from "./entities/class";
 import FileEntity from "./entities/file";
 
@@ -24,8 +24,8 @@ export default class FileGetter {
         readdirSync(path.toString(), "utf-8").forEach(file => {
                 if (fs.statSync(`${path}/${file}`).isDirectory()) {
                     files.push(...this.getFiles(`${path}/${file}`))
-                }else{
-                    files.push([file, `${path.toString()}/${file}`])
+                } else {
+                    files.push([file, `${path}/${file}`])
                 }
             }
         );
@@ -41,23 +41,23 @@ export default class FileGetter {
                 let newFile = new FileEntity();
                 let matches = fs.readFileSync(file[1], 'utf-8').toString().match(multipleRegex); //filter all file with regex
 
-                matches.forEach ((e, i) => { //iterates regex matches
+                matches.forEach((e, i) => { //iterates regex matches
 
                     if (e.match(classRegex)) { //if is a class
 
                         let newClass = new ClassEntity();
                         newClass.name = e.split(" ")[1]; //exclude class
 
-                        if (matches[i+1] && matches[i + 1].match(extendRegex)) { //if next index is extends of the class
-                            let e = i + 1;
+                        if (matches[i + 1] && matches[i + 1].match(classDependenciesRegex)) { //if next index is extends of the class
+                            let x = i + 1;
                             do {
-                                if (!matches[e].match(classRegex)) {
-                                    newClass.extends.push(matches[e].split(' ')[1]); //exclude extends or ,
+                                if (!matches[x].match(classRegex)) {
+                                    newClass.classDependencies.push(matches[x].split(' ')[1]); //exclude extends or ,
                                 } else {
                                     break;
                                 }
-                                e++;
-                            } while (matches[e] && matches[e].match(extendRegex) && !matches[e].match(classRegex))
+                                x++;
+                            } while (matches[x] && matches[x].match(classDependenciesRegex) && !matches[x].match(classRegex))
 
                         }
 
@@ -68,7 +68,7 @@ export default class FileGetter {
                 })
                 data.push(newFile);
             }
-            // console.log(JSON.stringify(data)) //show data
+            console.log(data) //show data
         } else {
             throw new Error("no path in FileGetter");
         }

@@ -1,7 +1,7 @@
 export default class ClassEntity {
     private _name: string;
     private _dependencies: string[] = [];
-    private _extends: string[] = [];
+    private _classDependencies: string[] = [];
 
 
     get name(): string {
@@ -20,11 +20,11 @@ export default class ClassEntity {
         this._dependencies = value;
     }
 
-    get extends(): string[] {
-        return this._extends;
+    get classDependencies(): string[] {
+        return this._classDependencies;
     }
 
-    set extends(value: string[]) {
-        this._extends = value;
+    set classDependencies(value: string[]) {
+        this._classDependencies = value;
     }
 }
